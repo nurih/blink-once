@@ -1,0 +1,17 @@
+{
+  "name": "blink-once",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "func start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@azure/storage-blob": "^12.2.1",
+    "@types/dotenv": "^8.2.0",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "jest": "26.4.2"
+  }
+}
