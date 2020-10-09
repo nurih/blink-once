@@ -1,4 +1,4 @@
-const { Storage } = require('../lib/storage');
+const { Storage } = require('../common/storage');
 
 module.exports = async function (context, req) {
 
