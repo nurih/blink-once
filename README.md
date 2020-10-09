@@ -64,5 +64,9 @@ The environment variable `AZURE_STORAGE_CONNECTION_STRING` must be set to a blob
 A container named `blink-once` must be created in that storage account. All nonce values would be stored in that container.
 
 
+## UI
 
+WORK-IN-PROGRESS
+
+A UI can present a form prompting user to either supply a new message to send, or accept an `id` to retrieve a previously saved message.
 
