@@ -4,13 +4,18 @@ const { v4: uuid4 } = require('uuid');
 const EMULATOR_CONNECTION = 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;'
 
 class Storage {
-    async initialize() {
+    
+    constructor(BlobStorageConnectionString = EMULATOR_CONNECTION) {
+        this.ConnectionString = BlobStorageConnectionString;
+    }
+    
+    async createContainer() {
         try {
-            const containerClient = Storage.getContainerClient();
+            const containerClient = this.getContainerClient();
 
             const createContainerResponse = await containerClient.createIfNotExists();
 
-            console.log(`"Container ${this.ContainerName} was created successfully. requestId: ${createContainerResponse.requestId}`);
+            console.log(`"Container ${Storage.ContainerName} was created successfully. requestId: ${createContainerResponse.requestId}`);
 
             return createContainerResponse.requestId;
         }
@@ -19,8 +24,8 @@ class Storage {
         }
     }
 
-    static getContainerClient() {
-        const blobServiceClient = BlobServiceClient.fromConnectionString(Storage.getConnectionString());
+    getContainerClient() {
+        const blobServiceClient = BlobServiceClient.fromConnectionString(this.ConnectionString);
 
         const containerClient = blobServiceClient.getContainerClient(Storage.ContainerName);
         return containerClient;
@@ -31,7 +36,7 @@ class Storage {
         const blobName = Storage.getBlobName(id);
 
         try {
-            const containerClient = Storage.getContainerClient();
+            const containerClient = this.getContainerClient();
             const blobClient = containerClient.getBlockBlobClient(blobName);
 
             const uploadBlobResponse = await blobClient.upload(payload, payload.length);
@@ -45,12 +50,12 @@ class Storage {
     }
 
     static createId() {
-        return (uuid4() + uuid4()).replace(/-/g,'');
+        return (uuid4() + uuid4()).replace(/-/g, '');
     }
 
     async read(id) {
         try {
-            const containerClient = Storage.getContainerClient();
+            const containerClient = this.getContainerClient();
             const blobName = Storage.getBlobName(id);
             const blobClient = containerClient.getBlockBlobClient(blobName);
             const response = await blobClient.download(0);
@@ -61,21 +66,11 @@ class Storage {
             console.info(`Delete blob ${blobName} after read response ${deleteResponse.succeeded}`);
 
             return result;
-        } catch (error) {
-            // if(error instanceof RestError){
-            //     console.debug(`RestError ${error.statusCode} for request ${error.request.method} on ${error.request.url}`)
-            // }
-            // else{
-            //     console.debug(error);
-            // }
-
+        } catch (error) {           
             throw error;
         }
     }
-
-    static getConnectionString() {
-        return process.env.AZURE_STORAGE_CONNECTION_STRING || EMULATOR_CONNECTION;
-    }
+   
 
     static get ContainerName() {
         return `blink-once`;

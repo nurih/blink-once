@@ -9,7 +9,7 @@ module.exports = async function (context, req) {
         return missingBodyErrorResponse();
     }
 
-    const id = await new Storage().write(payload);
+    const id = await new Storage(process.env.AZURE_STORAGE_CONNECTION_STRING).write(payload);
 
     return itemCreatedResponse(id);
 }
@@ -26,7 +26,7 @@ function itemCreatedResponse(id) {
 
 function missingBodyErrorResponse() {
     return {
-        status : 400,
+        status: 400,
         headers: {
             'Content-Type': 'application/json'
         },

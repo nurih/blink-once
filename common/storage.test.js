@@ -1,9 +1,14 @@
 const { Storage, EMULATOR_CONNECTION } = require('./storage');
 const { RestError } = require('@azure/storage-blob');
 
-describe('getConnectionString', () => {
-    it('uses local emulator if no environment variable', () => {
-        const actual = Storage.getConnectionString();
+describe('ConnectionString', () => {
+    it('uses supplied', () => {
+        const actual = new Storage('DUMMY_VALUE').ConnectionString;
+        expect(actual).toBe('DUMMY_VALUE');
+    });
+
+    it('uses local default when not supplied', () => {
+        const actual = new Storage().ConnectionString;
         expect(process.env.AZURE_STORAGE_CONNECTION_STRING).toBeFalsy();
         expect(actual).toBe(EMULATOR_CONNECTION);
     });
@@ -24,7 +29,7 @@ describe('createId', ()=>{
 })
 describe('initialize', () => {
     it('runs', async () => {
-        const actual = await (new Storage()).initialize();
+        const actual = await (new Storage()).createContainer();
         expect(actual).toBeTruthy();
     })
 })

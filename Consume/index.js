@@ -8,7 +8,7 @@ module.exports = async function (context, req) {
     }
 
     try {
-        const payload = await new Storage().read(id);
+        const payload = await new Storage(process.env.AZURE_STORAGE_CONNECTION_STRING).read(id);
         return payloadResponse(id, payload);
     } catch (error) {
         return missingContentErrorResponse(id);
