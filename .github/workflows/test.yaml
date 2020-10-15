@@ -1,0 +1,32 @@
+name: Build and test
+on:
+  workflow_dispatch:
+   
+
+jobs:
+  runner-job:
+    runs-on: windows-latest
+   
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache node modules
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build
+      run: npm build
+
+    - name: Unit Test
+      run: npm run test
+           
+    services:
+      # Label used to access the service container
+      azure-storage:
+        # Docker Hub image
+        image: microsoft/azure-storage-emulator
+        # Docker port mapping
+        ports:          
+          - 10000:10000
+          - 10001:10001 
+          - 10002:10002
