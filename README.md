@@ -1,5 +1,7 @@
 # Blink Once
 
+![Build and test](https://github.com/nurih/blink-once/workflows/Build%20and%20test/badge.svg)
+
 ## What is this?
 
 `blink-once` is an Azure Functions based project that provides API to write some data and consume it once, then delete the stored data.
