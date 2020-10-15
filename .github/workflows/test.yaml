@@ -10,7 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Cache node modules
     - name: Install Dependencies
       run: npm install
 
