@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>My Vue</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@next"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="jumbotron">
+            <h1 class="display-1">Blink Once</h1>
+        </div>
+
+        <section>
+            <p>A Blinky is a message that can be retrieved once.</p>
+            <p>Once retrieved, a Blinky is destroyed. It cannot be retrieved again.</p>
+            <p>Once created, a unique Blinky URL is the only way to retrieve the Blinky.</p>
+
+        </section>
+
+        <section>
+            <form v-on:submit.prevent>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="blinkyIdInput" v-model="idFromForm" placeholder="Enter id ..." />
+                    <div class="input-group-append">
+                        <button @click="consumeBlinky()" class="btn btn-primary" :disabled="!idFromForm || consumedData.text">Show</button>
+                    </div>
+
+                </div>
+            </form>
+            <div class="card" v-if="consumedData.status">
+                <div class="card-body">
+                    <h5 class="card-title">Retrieved Blinky</h5>
+                    <div v-if="consumedData.status != 200" class="alert alert-warning" role="alert">
+                        This blinky is gone.
+                    </div>
+                    <div class="input-group">
+                        <textarea id="consumed-data-text" class="form-control">{{consumedData.text}}</textarea>
+                        <div class="input-group-append p-2">
+                            <a href="#" @click="copyToClipboard('consumed-data-text')">
+                                <i class="fa fa-copy">&nbsp;</i>
+                            </a>
+                        </div>
+                        
+                    </div>
+                    <small class="bg-light">{{consumedData.status}} </small>
+                </div>
+            </div>
+        </section>
+
+        <section v-if="!idFromForm">
+
+            <div v-if="!newBlinkyUrl" class="border border-primary p-4">
+
+                <h2>Create a Blinky</h2>
+                <form v-on:submit.prevent>
+                    <div class="form-group">
+                        <label for="newBlinkyText">Blinky Message</label>
+                        <textarea class="form-control" id="newBlinkyText" rows="3" v-model="newBlinkyText" placeholder="Enter text ..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button @click="createBlinky" v-bind:disabled="!newBlinkyText.length" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+
+            <div v-else class="border border-primary p-4">
+                <p>
+                    Blinky URL
+                </p>
+                <div class="input-group mb-3">
+                    <input type="text" class="text-monospace form-control" id="new-blinky-url" :value="newBlinkyUrl"/>
+                    <div class="input-group-append p-2">
+                        <a @click="copyToClipboard('new-blinky-url')"><i class="fa fa-copy">&nbsp;</i></a>
+                    </div>
+                </div>
+                <p class="font-weight-light alert alert-warning"><i class="fa fa-exclamation-circle"></i> Copy this url and share it with care. This is the only time this url will be shown, so make sure to copy it before you leave this page.</p>
+            </div>
+
+        </section>
+
+
+        <section>
+            <div class="border border-secondary p-4">
+                <p class="lead">
+                    <a href="app.html" class="btn btn-secondary">New</a> Create a new Blinky
+                    <span v-if="blinkyId"> or clear this one</span>.
+                </p>
+                <p v-if="newBlinkyText.length" class="alert alert-danger" role="alert">
+                    Your entered some text, but did not create a blinky yet!
+                </p>
+                <p v-if="blinkyId" class="alert alert-warning" role="alert">
+                    Once you leave this page, the blinky <b class="bg-light">{{blinkyId}}</b> will be gone forever!
+                    Please make sure you copied the message sent to you before you create a new one, navigate away, or close your browser.
+                </p>
+            </div>
+        </section>
+        <hr />
+
+        
+
+    </div>
+    <!-- Load rest of scripts -->
+    <script src="./blinkOnceApi.js"></script>
+    <script src="./blinkOnceUi.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+</body>
+
+</html>

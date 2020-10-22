@@ -12,6 +12,19 @@
     "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "jest": "26.4.2"
+    "@vue/test-utils": "^1.1.0",
+    "jest": "26.4.2",
+    "vue-jest": "^3.0.7"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "collectCoverageFrom": ["**/*.{js,vue}", "!**/node_modules/**"],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest"
+    }
   }
 }
