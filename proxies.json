@@ -1,4 +1,11 @@
 {
   "$schema": "http://json.schemastore.org/proxies",
-  "proxies": {}
+  "proxies": {
+    "files": {
+      "matchCondition": {
+        "route": "UI/{*path}"
+      },
+      "backendUri": "http://localhost:7071/api/StaticFiles?path={path}"
+    }
+  }
 }

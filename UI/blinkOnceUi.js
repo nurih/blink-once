@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:7071/api';
+const API_URL = `${window.location.protocol}//${window.location.host}/api`;
 const blinkData = new BlinkOnceData(API_URL);
 const app = Vue.createApp({
     data: function () {
