@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant S as Sender
+    participant API as Service
+    participant R as Receiver
+
+    S ->> API: Create Message
+    activate API
+        API -->>API: Generate unique id
+        API->> S: <Message id>
+    deactivate API
+    note right of S: Send URL to Recipient via any channel
+    S -->> R: <Message URL>
+    R ->> API: Access with URL
+    activate API
+        API -->> API: Read and delete Message    
+        API ->> R: Show Message Content
+    deactivate API
