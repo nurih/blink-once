@@ -92,3 +92,23 @@ WORK-IN-PROGRESS
 
 A UI can present a form prompting user to either supply a new message to send, or accept an `id` to retrieve a previously saved message.
 
+## Deployment
+
+### Terraform
+
+The folder [`infrastructure/terraform`](infrastructure/terraform) contains simple deployment script setting up your own instance featuring:
+
+1. Simple UI served by the function itself.
+1. API endpoints if you want to write your own UI
+1. Permissive CORS (_change this to suit yoru needs!_)
+1. Backing storage account and container to store the messages
+1. Auto-expiration of blobs after 3 days if not consumed.
+1. Very basic App Service Plan - `Dynamic` `Y1` sku.
+
+```shell
+cd infrastructure/terraform
+terraform init
+terraform plan --out my.plan
+# Supply at least a base name. Full resource naming uses it as a prefix together with the location. See variables.tf for more variables, and locals.tf for how they are used.
+terraform apply ./my.plan
+```
