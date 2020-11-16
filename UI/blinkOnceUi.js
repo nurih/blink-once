@@ -7,27 +7,45 @@ const app = Vue.createApp({
             newBlinkyUrl: '',
             idFromUrl: getIdFromUrl(),
             idFromForm: getIdFromUrl(),
-            consumedData: {}
+            consumedData: {},
+            isBusy: false
         }
     },
     methods:
     {
         async createBlinky() {
             try {
+                this.$data.isBusy = true;
+
                 const response = await blinkData.memorize(this.newBlinkyText);
                 this.newBlinkyUrl = `${window.location.href}?id=${response.id}`;
                 this.newBlinkyText = '';
+
             } catch (error) {
                 console.log(error);
+            }
+            finally {
+                this.$data.isBusy = false;
             }
         },
 
         async consumeBlinky() {
-            this.newBlinkyUrl = '';
-            const id = this.idFromForm || this.idFromUrl;
+            try {
+                this.$data.isBusy = true;
 
-            console.log('Trying to get', id)
-            this.consumedData = await blinkData.consume(id);
+                this.newBlinkyUrl = '';
+                const id = this.idFromForm || this.idFromUrl;
+
+                console.log('Trying to get', id)
+                this.consumedData = await blinkData.consume(id);
+
+            } catch (error) {
+                console.log(error);
+            }
+            finally {
+                this.$data.isBusy = false;
+            }
+
         },
         copyToClipboard(elementId) {
             var sourceElement = document.getElementById(elementId);
