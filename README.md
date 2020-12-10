@@ -92,3 +92,37 @@ WORK-IN-PROGRESS
 
 A UI can present a form prompting user to either supply a new message to send, or accept an `id` to retrieve a previously saved message.
 
+----
+
+# FAQ
+
+#### Q: Why not use a database to store the blinkies?
+
+Because, reasons:
+
+- Blob storage is cheap..
+- No operations other than `write`, `get`, `delete` are necessary.
+
+#### Q: Is there auditing of messages?
+
+No. This would defeat the one-time and one recipient and one delivery goals, because an audit represents storage of the message (or parts thereof) in some log or fashion.
+
+#### Q: Are messages secure?
+
+- As secure as you provision your blob storage and transport layers. At the very least, you should ensure blob storage is not accessible to the public, and does not allow anonymous blob access.
+- As secure as you provision your function too. You should not allow access to the API or UI to to the public unless you want to. You may want to further secure the endpoints with an authentication mechanism of your choice, or front it with a gateway or perimiter security.
+- Messages themselves are not currently encrypted, so if one gains access to the content they gain access to the message.
+- Message id is rather difficult to guess, but it's up to the message creator to provide the one-time message id to the recipient in a secure manner.
+
+#### Q: Why is the UI not pretty?
+
+Beauty is in the eye of the beholder.
+
+#### Q: I want a new feature. How do I request it?
+
+Submit a PR, or open an issue.
+
+#### Q: Can I deploy this to a cloud other than Azure?
+
+The function code and method signature is Azure Function specific. The code addressing blob storage is Azure specific as well. If enough community interest is there, it can be done. See *"I want a new feature. How do I request it?"*.
+
